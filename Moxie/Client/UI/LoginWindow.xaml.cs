@@ -4,13 +4,13 @@ using System.Windows;
 namespace Moxie
 {
   /// <summary>
-  /// Interaction logic for Login.xaml
+  /// Interaction logic for LoginWindow.xaml
   /// </summary>
-  public partial class Login : Window
+  public partial class LoginWindow : Window
   {
-    public Login()
+    public LoginWindow()
     {
-      LogIn("Nuff", "localhost", 25556);
+      LogIn("Nuff", "192.168.0.1", 25556);
       InitializeComponent();
     }
 
@@ -27,7 +27,7 @@ namespace Moxie
 
     void LogIn(string name, string address, int port)
     {
-      Client client = new Client(name, address, port);
+      ClientWindow client = new ClientWindow(name, address, port);
       client.Show();
 
       Close();

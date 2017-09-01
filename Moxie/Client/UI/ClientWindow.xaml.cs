@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,53 +19,13 @@ using System.Windows.Shapes;
 namespace Moxie
 {
   /// <summary>
-  /// Interaction logic for Client.xaml
+  /// Interaction logic for ClientWindow.xaml
   /// </summary>
-  public partial class Client : Window
+  public partial class ClientWindow : Window
   {
-    string name;
-    string address;
-    int port;
-
-    public Client(string name, string address, int port)
+    public ClientWindow(string name, string address, int port)
     {
-      this.name = name;
-      this.address = address;
-      this.port = port;
-
       InitializeComponent();
-
-      if (!OpenConnection(address, port))
-      {
-        Print("Connection failed!");
-        return;
-      }
-
-      Print("Attempting a connection to " + address + ":" + port + ", user: " + name);
-    }
-
-    public void Print(string message)
-    {
-      TextHistory.AppendText(message + Environment.NewLine);
-      ScrollHistory.ScrollToBottom();
-    }
-
-    void Send(string message)
-    {
-      if (string.IsNullOrWhiteSpace(message))
-        return;
-
-      message = message.TrimStart(' ');
-      message = message.TrimEnd(' ');
-      message = $"{DateTime.Now.Hour}:{DateTime.Now.Minute} {name}: {message}";
-
-      Print(message);
-      TextMessage.Clear();
-      TextMessage.Focus();
-    }
-
-    bool OpenConnection(string address, int port)
-    {
     }
 
     void OnLoaded_TextMessage(object sender, RoutedEventArgs e)
@@ -74,13 +37,33 @@ namespace Moxie
     {
       if (e.Key == Key.Enter)
       {
-        Send(TextMessage.Text);
+        SendMessage(TextMessage.Text);
       }
     }
 
     void OnClick_ButtonSend(object sender, RoutedEventArgs e)
     {
-      Send(TextMessage.Text);
+      SendMessage(TextMessage.Text);
+    }
+
+    public void Print(string message)
+    {
+      TextHistory.AppendText(message + Environment.NewLine);
+      ScrollHistory.ScrollToBottom();
+    }
+
+    void SendMessage(string message)
+    {
+      if (string.IsNullOrWhiteSpace(message))
+        return;
+
+      message = message.TrimStart(' ');
+      message = message.TrimEnd(' ');
+      message = $"{DateTime.Now.Hour}:{DateTime.Now.Minute} {name}: {message}";
+
+      Print(message);
+      TextMessage.Clear();
+      TextMessage.Focus();
     }
   }
 }

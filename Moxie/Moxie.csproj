@@ -54,11 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Client.xaml">
+    <Page Include="Client\UI\ClientWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Login.xaml">
+    <Page Include="Client\UI\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -66,17 +66,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client.xaml.cs">
-      <DependentUpon>Client.xaml</DependentUpon>
+    <Compile Include="Client\Client.cs" />
+    <Compile Include="Client\UI\ClientWindow.xaml.cs">
+      <DependentUpon>ClientWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
+    <Compile Include="Client\UI\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlaceholderTextBox.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerMain.cs" />
+    <Compile Include="UI\PlaceholderTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -102,5 +105,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
