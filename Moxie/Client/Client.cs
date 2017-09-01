@@ -28,18 +28,32 @@ namespace Moxie
       this.port = port;
       this.window = window;
 
-      if (!OpenConnection(address, port))
+      if (!OpenConnection(address))
       {
         Print("Connection failed!");
         return;
       }
 
       Print("Attempting a connection to " + address + ":" + port + ", user: " + name);
+      Send($"{name} connected from {address}:{port}".GetBytes());
     }
 
-    bool OpenConnection(string address, int port)
+    public void SendMessage(string message)
     {
-      client = new UdpClient(port);
+      if (string.IsNullOrWhiteSpace(message))
+        return;
+
+      message = message.TrimStart(' ');
+      message = message.TrimEnd(' ');
+      message = $"{DateTime.Now.Hour}:{DateTime.Now.Minute.ToString().Prepend("0", (text) => 2 - text.Length)} {name}: {message}";
+
+      window.ShowMessage(message);
+      Send(message.GetBytes());
+    }
+
+    bool OpenConnection(string address)
+    {
+      client = new UdpClient();
       ip = IPAddress.Parse(address);
 
       return true;
@@ -50,7 +64,7 @@ namespace Moxie
       IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
       byte[] data = client.Receive(ref endPoint);
 
-      return Encoding.ASCII.GetString(data);
+      return data.GetString();
     }
 
     void Send(byte[] data)
@@ -58,6 +72,7 @@ namespace Moxie
       send = new Thread(() =>
       {
         client.Send(data, data.Length, new IPEndPoint(ip, port));
+        Console.WriteLine(((IPEndPoint)client.Client.LocalEndPoint).Port);
       });
 
       send.Start();

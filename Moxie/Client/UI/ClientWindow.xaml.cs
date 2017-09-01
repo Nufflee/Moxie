@@ -23,9 +23,13 @@ namespace Moxie
   /// </summary>
   public partial class ClientWindow : Window
   {
+    Client client;
+
     public ClientWindow(string name, string address, int port)
     {
       InitializeComponent();
+
+      client = new Client(name, address, port, this);
     }
 
     void OnLoaded_TextMessage(object sender, RoutedEventArgs e)
@@ -37,13 +41,13 @@ namespace Moxie
     {
       if (e.Key == Key.Enter)
       {
-        SendMessage(TextMessage.Text);
+        client.SendMessage(TextMessage.Text);
       }
     }
 
     void OnClick_ButtonSend(object sender, RoutedEventArgs e)
     {
-      SendMessage(TextMessage.Text);
+      client.SendMessage(TextMessage.Text);
     }
 
     public void Print(string message)
@@ -52,15 +56,8 @@ namespace Moxie
       ScrollHistory.ScrollToBottom();
     }
 
-    void SendMessage(string message)
+    public void ShowMessage(string message)
     {
-      if (string.IsNullOrWhiteSpace(message))
-        return;
-
-      message = message.TrimStart(' ');
-      message = message.TrimEnd(' ');
-      message = $"{DateTime.Now.Hour}:{DateTime.Now.Minute} {name}: {message}";
-
       Print(message);
       TextMessage.Clear();
       TextMessage.Focus();

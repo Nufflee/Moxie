@@ -1,20 +1,30 @@
 ﻿using System;
 
-namespace MoxieServer
+namespace Moxie.Server
 {
   public class Program
   {
-    static int port;
+    Server server;
+
+    public Program(int port)
+    {
+      server = new Server(port);
+    }
 
     static void Main(string[] args)
     {
+      int port;
+
       if (args.Length == 0)
       {
         port = 25565;
-        return;
+      }
+      else
+      {
+        int.TryParse(args[0], out port);
       }
 
-      int.TryParse(args[0], out port);
+      new Program(port);
     }
   }
 }

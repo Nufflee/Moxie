@@ -10,7 +10,7 @@ namespace Moxie
   {
     public LoginWindow()
     {
-      LogIn("Nuff", "192.168.0.1", 25556);
+      LogIn("Nuff", "127.0.0.1", 25565);
       InitializeComponent();
     }
 
