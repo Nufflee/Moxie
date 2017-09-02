@@ -95,10 +95,17 @@ namespace Moxie.Server
         Console.WriteLine(e);
       }
 
-      if (packetData is ConnectionPacket packet)
+      if (packetData is ConnectionPacket)
       {
-        clients.Add(new ServerClient(packet.name, packet.ip, 0));
-        Console.WriteLine(packet.name);
+        ConnectionPacket packet = (ConnectionPacket)packetData;
+
+        clients.Add(new ServerClient(packet.name, packet.ip, new Random().Next()));
+      }
+      else if (packetData is MessagePacket)
+      {
+        MessagePacket packet = (MessagePacket)packetData;
+
+        Console.WriteLine($"{DateTime.Now.ToShortTimeString()} {packet.name}: {packet.message}");
       }
     }
   }

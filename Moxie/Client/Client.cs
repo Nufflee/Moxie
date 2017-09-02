@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Moxie.Common;
 using Moxie.Server;
 
@@ -36,8 +33,6 @@ namespace Moxie
       }
 
       Print("Attempting a connection to " + ip.Address + ":" + ip.Port + ", user: " + name);
-      Send();
-      Send(new ConnectionPacket(name, ip));
     }
 
     public void SendMessage(string message)
@@ -47,15 +42,18 @@ namespace Moxie
 
       message = message.TrimStart(' ');
       message = message.TrimEnd(' ');
-      message = $"{DateTime.Now.Hour}:{DateTime.Now.Minute.ToString().Prepend("0", (text) => 2 - text.Length)} {name}: {message}";
+      string fullMessage = $"{DateTime.Now.ToShortTimeString()} {name}: {message}";
 
-      window.ShowMessage(message);
-      //Send(message.GetBytes());
+      window.ShowMessage(fullMessage);
+
+      Send(new MessagePacket(name, message));
     }
 
     bool OpenConnection()
     {
       client = new UdpClient();
+
+      Send(new ConnectionPacket(name, ip));
 
       return true;
     }
