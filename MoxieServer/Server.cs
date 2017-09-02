@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 
@@ -64,21 +67,39 @@ namespace Moxie.Server
 
           byte[] data = client.Receive(ref endPoint);
 
-          string text = data.GetString();
-
-          Process(text);
-
-          Console.WriteLine($"{clients[0].ip}:{clients[0].port}");
-          Console.WriteLine(text);
+          Process(data);
         }
       });
 
       recieve.Start();
     }
 
-    void Process(byte[] packet)
+    void Process(byte[] data)
     {
-      if ()
+      object packetData = null;
+
+      try
+      {
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        using (MemoryStream stream = new MemoryStream())
+        {
+          stream.Write(data, 0, data.Length);
+          stream.Seek(0, SeekOrigin.Begin);
+
+          packetData = formatter.Deserialize(stream);
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+      }
+
+      if (packetData is ConnectionPacket packet)
+      {
+        clients.Add(new ServerClient(packet.name, packet.ip, 0));
+        Console.WriteLine(packet.name);
+      }
     }
   }
 }

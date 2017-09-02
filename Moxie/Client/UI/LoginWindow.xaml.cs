@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
+using Moxie.Common;
 
 namespace Moxie
 {
@@ -10,24 +12,18 @@ namespace Moxie
   {
     public LoginWindow()
     {
-      LogIn("Nuff", "127.0.0.1", 25565);
+      LogIn("Nuff", new IP4("127.0.0.1", 25565));
       InitializeComponent();
     }
 
     void OnClick_ButtonLogin(object sender, RoutedEventArgs e)
     {
-      if (TextUsername.Text == "Username")
-      {
-        LogIn("Nuff", "localhost", 25556);
-        return;
-      }
-
-      LogIn(TextUsername.Text, TextIPAddress.Text, int.Parse(TextPort.Text));
+      LogIn(TextUsername.Text, new IP4(TextIPAddress.Text, int.Parse(TextPort.Text)));
     }
 
-    void LogIn(string name, string address, int port)
+    void LogIn(string name, IP4 address)
     {
-      ClientWindow client = new ClientWindow(name, address, port);
+      ClientWindow client = new ClientWindow(name, address);
       client.Show();
 
       Close();

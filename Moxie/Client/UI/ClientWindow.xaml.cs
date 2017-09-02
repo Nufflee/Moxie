@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Moxie.Common;
 
 namespace Moxie
 {
@@ -25,11 +26,11 @@ namespace Moxie
   {
     Client client;
 
-    public ClientWindow(string name, string address, int port)
+    public ClientWindow(string name, IP4 address)
     {
       InitializeComponent();
 
-      client = new Client(name, address, port, this);
+      client = new Client(name, address, this);
     }
 
     void OnLoaded_TextMessage(object sender, RoutedEventArgs e)

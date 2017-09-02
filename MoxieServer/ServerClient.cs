@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
 using System.Text;
+using Moxie.Common;
 
 namespace Moxie.Server
 {
   public class ServerClient
   {
     public readonly string name;
-    public readonly IPAddress ip;
-    public readonly int port;
+    public readonly IP4 ip;
     public readonly int id;
 
     public int attempt;
 
-    public ServerClient(string name, IPAddress ip, int port, int id)
+    public ServerClient(string name, IP4 ip, int id)
     {
       this.name = name;
       this.ip = ip;
-      this.port = port;
       this.id = id;
     }
   }
