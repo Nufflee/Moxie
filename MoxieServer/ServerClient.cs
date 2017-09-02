@@ -11,11 +11,11 @@ namespace Moxie.Server
   {
     public readonly string name;
     public readonly IP4 ip;
-    public readonly int id;
+    public readonly string id;
 
     public int attempt;
 
-    public ServerClient(string name, IP4 ip, int id)
+    public ServerClient(string name, IP4 ip, string id)
     {
       this.name = name;
       this.ip = ip;

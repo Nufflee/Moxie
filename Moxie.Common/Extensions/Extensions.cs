@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Moxie
@@ -23,6 +24,11 @@ namespace Moxie
       }
 
       return text;
+    }
+
+    public static void Shuffle<T>(this T[] array)
+    {
+      array = array.OrderBy(x => new Random().Next()).ToArray();
     }
   }
 }

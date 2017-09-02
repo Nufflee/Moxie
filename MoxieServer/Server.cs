@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
+using Moxie.Common;
 
 namespace Moxie.Server
 {
@@ -99,7 +100,10 @@ namespace Moxie.Server
       {
         ConnectionPacket packet = (ConnectionPacket)packetData;
 
-        clients.Add(new ServerClient(packet.name, packet.ip, new Random().Next()));
+        Guid id = Guid.NewGuid();
+
+        clients.Add(new ServerClient(packet.name, packet.ip, id.ToString()));
+        Console.WriteLine($"{packet.name} connected to the server with id: {id}");
       }
       else if (packetData is MessagePacket)
       {
