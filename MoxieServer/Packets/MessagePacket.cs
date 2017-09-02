@@ -3,7 +3,7 @@
 namespace Moxie.Server
 {
   [Serializable]
-  public class MessagePacket : IPacket
+  public class MessagePacket : Packet
   {
     public readonly string name;
     public readonly string message;

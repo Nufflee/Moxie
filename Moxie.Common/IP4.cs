@@ -19,5 +19,10 @@ namespace Moxie.Common
     {
       return new IPEndPoint(IPAddress.Parse(ip.Address), ip.Port);
     }
+
+    public static implicit operator IP4(IPEndPoint endPoint)
+    {
+      return new IP4(endPoint.Address.ToString(), endPoint.Port);
+    }
   }
 }

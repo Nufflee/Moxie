@@ -4,7 +4,7 @@ using Moxie.Common;
 namespace Moxie.Server
 {
   [Serializable]
-  public class ConnectionPacket : IPacket
+  public class ConnectionPacket : Packet
   {
     public readonly string name;
     public readonly IP4 ip;

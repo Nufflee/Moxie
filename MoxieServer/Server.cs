@@ -15,7 +15,7 @@ namespace Moxie.Server
   {
     int port;
 
-    UdpClient client;
+    UdpClient udpClient;
     Thread run, manage, send, recieve;
 
     List<ServerClient> clients = new List<ServerClient>();
@@ -25,7 +25,7 @@ namespace Moxie.Server
     public Server(int port)
     {
       this.port = port;
-      client = new UdpClient(port);
+      udpClient = new UdpClient(port);
       run = new Thread(Run);
 
       run.Start();
@@ -39,11 +39,6 @@ namespace Moxie.Server
 
       ManageClients();
       Recieve();
-
-      send = new Thread(() =>
-      {
-      });
-      send.Start();
     }
 
     void ManageClients()
@@ -66,7 +61,7 @@ namespace Moxie.Server
         {
           IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
 
-          byte[] data = client.Receive(ref endPoint);
+          byte[] data = udpClient.Receive(ref endPoint);
 
           Process(data);
         }
@@ -81,15 +76,7 @@ namespace Moxie.Server
 
       try
       {
-        BinaryFormatter formatter = new BinaryFormatter();
-
-        using (MemoryStream stream = new MemoryStream())
-        {
-          stream.Write(data, 0, data.Length);
-          stream.Seek(0, SeekOrigin.Begin);
-
-          packetData = formatter.Deserialize(stream);
-        }
+        packetData = Packet.Deserialize(data);
       }
       catch (Exception e)
       {
@@ -109,8 +96,30 @@ namespace Moxie.Server
       {
         MessagePacket packet = (MessagePacket)packetData;
 
+        SendToAll(packet);
+
         Console.WriteLine($"{DateTime.Now.ToShortTimeString()} {packet.name}: {packet.message}");
       }
+    }
+
+    void SendToAll(Packet packet)
+    {
+      foreach (ServerClient client in clients)
+      {
+        Send(packet, client.ip);
+      }
+    }
+
+    void Send(Packet packet, IP4 ip)
+    {
+      send = new Thread(() =>
+      {
+        byte[] data = packet.Serialize();
+
+        udpClient.Send(data, data.Length, ip);
+      });
+
+      send.Start();
     }
   }
 }

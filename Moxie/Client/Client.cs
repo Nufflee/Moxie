@@ -23,7 +23,6 @@ namespace Moxie
     public Client(string name, IP4 ip, ClientWindow window)
     {
       this.name = name;
-      this.ip = ip;
       this.window = window;
 
       if (!OpenConnection())
@@ -51,7 +50,8 @@ namespace Moxie
 
     bool OpenConnection()
     {
-      client = new UdpClient();
+      client = new UdpClient(0);
+      ip = client.Client.LocalEndPoint;
 
       Send(new ConnectionPacket(name, ip));
 
@@ -66,31 +66,11 @@ namespace Moxie
       return data.GetString();
     }
 
-    void Send(IPacket packet)
+    void Send(Packet packet)
     {
       send = new Thread(() =>
       {
-        BinaryFormatter formatter = new BinaryFormatter();
-
-        byte[] data;
-
-        using (MemoryStream stream = new MemoryStream())
-        {
-          formatter.Serialize(stream, packet);
-          data = stream.ToArray();
-        }
-
-        client.Send(data, data.Length, ip);
-      });
-
-      send.Start();
-    }
-
-    void Send(string text)
-    {
-      send = new Thread(() =>
-      {
-        byte[] data = Encoding.ASCII.GetBytes(text);
+        byte[] data = packet.Serialize();
 
         client.Send(data, data.Length, ip);
       });
