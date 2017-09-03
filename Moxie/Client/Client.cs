@@ -14,16 +14,18 @@ namespace Moxie
   {
     string name;
     IP4 ip;
+    IP4 serverIp;
     ClientWindow window;
 
     UdpClient client;
 
     Thread send;
 
-    public Client(string name, IP4 ip, ClientWindow window)
+    public Client(string name, IP4 serverIp, ClientWindow window)
     {
       this.name = name;
       this.window = window;
+      this.serverIp = serverIp;
 
       if (!OpenConnection())
       {
@@ -31,7 +33,7 @@ namespace Moxie
         return;
       }
 
-      Print("Attempting a connection to " + ip.Address + ":" + ip.Port + ", user: " + name);
+      Print("Attempting a connection to " + serverIp.Address + ":" + serverIp.Port + ", user: " + name);
     }
 
     public void SendMessage(string message)
@@ -51,7 +53,8 @@ namespace Moxie
     bool OpenConnection()
     {
       client = new UdpClient(0);
-      ip = client.Client.LocalEndPoint;
+      client.Connect(serverIp.Address, serverIp.Port);
+      ip = (IP4)client.Client.LocalEndPoint;
 
       Send(new ConnectionPacket(name, ip));
 
@@ -60,7 +63,7 @@ namespace Moxie
 
     string Recieve()
     {
-      IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, ip.Port);
+      IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, serverIp.Port);
       byte[] data = client.Receive(ref endPoint);
 
       return data.GetString();
@@ -72,7 +75,7 @@ namespace Moxie
       {
         byte[] data = packet.Serialize();
 
-        client.Send(data, data.Length, ip);
+        client.Send(data, data.Length);
       });
 
       send.Start();
