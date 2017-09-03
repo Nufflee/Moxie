@@ -53,15 +53,16 @@ namespace Moxie
 
     public void Print(string message)
     {
-      TextHistory.AppendText(message + Environment.NewLine);
-      ScrollHistory.ScrollToBottom();
+      TextHistory.Dispatcher.Invoke(() => TextHistory.AppendText(message + Environment.NewLine));
+
+      ScrollHistory.Dispatcher.Invoke(() => ScrollHistory.ScrollToBottom());
     }
 
     public void ShowMessage(string message)
     {
       Print(message);
-      TextMessage.Clear();
-      TextMessage.Focus();
+      TextMessage.Dispatcher.Invoke(() => TextMessage.Clear());
+      TextMessage.Dispatcher.Invoke(() => TextMessage.Focus());
     }
   }
 }

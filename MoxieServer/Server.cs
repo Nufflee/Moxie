@@ -98,7 +98,7 @@ namespace Moxie.Server
 
         SendToAll(packet);
 
-        Console.WriteLine($"{DateTime.Now.ToShortTimeString()} {packet.name}: {packet.message}");
+        Console.WriteLine(packet.ToString());
       }
     }
 

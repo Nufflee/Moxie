@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
+using System.Windows.Threading;
 using Moxie.Common;
 using Moxie.Server;
 
@@ -19,7 +20,7 @@ namespace Moxie
 
     UdpClient client;
 
-    Thread send;
+    Thread send, recieve;
 
     public Client(string name, IP4 serverIp, ClientWindow window)
     {
@@ -34,6 +35,8 @@ namespace Moxie
       }
 
       Print("Attempting a connection to " + serverIp.Address + ":" + serverIp.Port + ", user: " + name);
+
+      Recieve();
     }
 
     public void SendMessage(string message)
@@ -61,12 +64,44 @@ namespace Moxie
       return true;
     }
 
-    string Recieve()
+    void Recieve()
     {
-      IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, serverIp.Port);
-      byte[] data = client.Receive(ref endPoint);
+      recieve = new Thread(() =>
+      {
+        while (true)
+        {
+          IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, serverIp.Port);
+          byte[] data = client.Receive(ref endPoint);
 
-      return data.GetString();
+          Process(data);
+        }
+      });
+
+      recieve.Start();
+    }
+
+    void Process(byte[] data)
+    {
+      object packetData = null;
+
+      try
+      {
+        packetData = Packet.Deserialize(data);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+      }
+
+      if (packetData is ConnectionPacket)
+      {
+      }
+      else if (packetData is MessagePacket)
+      {
+        MessagePacket packet = (MessagePacket)packetData;
+
+        Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.ToString()));
+      }
     }
 
     void Send(Packet packet)
@@ -82,5 +117,6 @@ namespace Moxie
     }
 
     void Print(string message) => window.Print(message);
+    void ShowMessage(string message) => window.ShowMessage(message);
   }
 }

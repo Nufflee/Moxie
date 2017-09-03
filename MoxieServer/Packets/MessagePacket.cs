@@ -13,5 +13,10 @@ namespace Moxie.Server
       this.name = name;
       this.message = message;
     }
+
+    public override string ToString()
+    {
+      return $"{DateTime.Now.ToShortTimeString()} {name}: {message}";
+    }
   }
 }
