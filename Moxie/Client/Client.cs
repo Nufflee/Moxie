@@ -18,6 +18,8 @@ namespace Moxie
     IP4 serverIp;
     ClientWindow window;
 
+    User user;
+
     UdpClient client;
 
     Thread send, recieve;
@@ -50,7 +52,7 @@ namespace Moxie
 
       window.ShowMessage(fullMessage);
 
-      Send(new MessagePacket(name, message));
+      Send(new MessagePacket(user, message));
     }
 
     bool OpenConnection()
@@ -59,7 +61,9 @@ namespace Moxie
       client.Connect(serverIp.Address, serverIp.Port);
       ip = (IP4)client.Client.LocalEndPoint;
 
-      Send(new ConnectionPacket(name, ip));
+      user = new User(name, Guid.NewGuid(), ip);
+
+      Send(new ConnectionPacket(user, ip));
 
       return true;
     }
@@ -99,6 +103,11 @@ namespace Moxie
       else if (packetData is MessagePacket)
       {
         MessagePacket packet = (MessagePacket)packetData;
+
+        if (packet.user == user)
+        {
+          return;
+        }
 
         Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.ToString()));
       }

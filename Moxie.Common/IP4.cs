@@ -4,7 +4,7 @@ using System.Net;
 namespace Moxie.Common
 {
   [Serializable]
-  public class IP4
+  public struct IP4
   {
     public string Address { get; }
     public int Port { get; }

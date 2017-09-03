@@ -18,7 +18,7 @@ namespace Moxie.Server
     UdpClient udpClient;
     Thread run, manage, send, recieve;
 
-    List<ServerClient> clients = new List<ServerClient>();
+    List<User> users = new List<User>();
 
     bool isRunning;
 
@@ -87,10 +87,8 @@ namespace Moxie.Server
       {
         ConnectionPacket packet = (ConnectionPacket)packetData;
 
-        Guid id = Guid.NewGuid();
-
-        clients.Add(new ServerClient(packet.name, packet.ip, id.ToString()));
-        Console.WriteLine($"{packet.name} connected to the server with id: {id}");
+        users.Add(packet.user);
+        Console.WriteLine($"{packet.user.name} connected to the server with id: {packet.user.id}");
       }
       else if (packetData is MessagePacket)
       {
@@ -102,11 +100,11 @@ namespace Moxie.Server
       }
     }
 
-    void SendToAll(Packet packet)
+    void SendToAll(Packet packet, bool sendToSender = false)
     {
-      foreach (ServerClient client in clients)
+      foreach (User user in users)
       {
-        Send(packet, client.ip);
+        Send(packet, user.ip);
       }
     }
 

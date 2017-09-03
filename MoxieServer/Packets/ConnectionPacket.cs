@@ -6,12 +6,12 @@ namespace Moxie.Server
   [Serializable]
   public class ConnectionPacket : Packet
   {
-    public readonly string name;
+    public readonly User user;
     public readonly IP4 ip;
 
-    public ConnectionPacket(string name, IP4 ip)
+    public ConnectionPacket(User user, IP4 ip)
     {
-      this.name = name;
+      this.user = user;
       this.ip = ip;
     }
   }
