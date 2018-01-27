@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Moxie.Common;
 
 namespace Moxie.Client.UI
@@ -25,6 +26,13 @@ namespace Moxie.Client.UI
       client.Show();
 
       Hide();
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+      base.OnClosed(e);
+
+      Application.Current.Shutdown();
     }
   }
 }

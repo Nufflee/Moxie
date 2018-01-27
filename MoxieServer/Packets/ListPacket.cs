@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Moxie.Common;
 
 namespace Moxie.Server.Packets
 {
@@ -8,10 +9,12 @@ namespace Moxie.Server.Packets
     where T : Packet
   {
     public List<T> Packets { get; }
+    public override IP4 Sender { get; }
 
-    public ListPacket(List<T> packets)
+    public ListPacket(List<T> packets, IP4 sender)
     {
       Packets = packets;
+      Sender = sender;
     }
   }
 }

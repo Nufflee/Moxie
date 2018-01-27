@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Moxie.Common;
 
 namespace Moxie.Server.Packets
 {
   [Serializable]
-  public class Packet
+  public abstract class Packet
   {
+    public abstract IP4 Sender { get; }
+
     public byte[] Serialize()
     {
       BinaryFormatter formatter = new BinaryFormatter();

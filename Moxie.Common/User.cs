@@ -18,10 +18,7 @@ namespace Moxie.Common
 
     public static bool operator ==(User left, User right)
     {
-      if ((object)left == null || (object)right == null)
-        throw new ArgumentNullException();
-
-      return left.Id == right.Id;
+      return left?.Id == right?.Id;
     }
 
     public static bool operator !=(User left, User right)
@@ -36,7 +33,7 @@ namespace Moxie.Common
 
     public override bool Equals(object obj)
     {
-      if (ReferenceEquals(null, obj)) return false;
+      if (obj is null) return false;
       if (ReferenceEquals(this, obj)) return true;
       return obj.GetType() == GetType() && Equals((User)obj);
     }

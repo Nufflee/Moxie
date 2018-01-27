@@ -7,12 +7,11 @@ namespace Moxie.Server.Packets
   public class ConnectionPacket : Packet
   {
     public User User { get; }
-    public IP4 Ip { get; }
+    public override IP4 Sender => User.Ip;
 
-    public ConnectionPacket(User user, IP4 ip)
+    public ConnectionPacket(User user)
     {
       User = user;
-      Ip = ip;
     }
   }
 }

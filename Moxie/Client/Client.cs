@@ -61,7 +61,7 @@ namespace Moxie.Client
 
       user = new User(name, Guid.NewGuid(), ip);
 
-      Send(new ConnectionPacket(user, ip));
+      Send(new ConnectionPacket(user));
 
       return true;
     }
@@ -97,20 +97,17 @@ namespace Moxie.Client
 
       switch (packetData)
       {
-        case MessagePacket packet:
-          if (packet.User == user)
-          {
-            return;
-          }
+        case TextPacket packet:
+          Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.FormattedText));
 
-          Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.ToString()));
           break;
 
-        case ListPacket<MessagePacket> packet:
-          foreach (MessagePacket message in packet.Packets)
+        case ListPacket<TextPacket> packet:
+          foreach (TextPacket message in packet.Packets)
           {
-            Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(message.ToString()));
+            Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(message.FormattedText));
           }
+
           break;
       }
     }

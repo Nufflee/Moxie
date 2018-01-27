@@ -50,5 +50,12 @@ namespace Moxie.Client.UI
       TextMessage.Dispatcher.Invoke(() => TextMessage.Clear());
       TextMessage.Dispatcher.Invoke(() => TextMessage.Focus());
     }
+
+    protected override void OnClosed(EventArgs e)
+    {
+      base.OnClosed(e);
+
+      Application.Current.Shutdown();
+    }
   }
 }
