@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Moxie.Server
+namespace Moxie.Server.Packets
 {
   [Serializable]
   public class Packet

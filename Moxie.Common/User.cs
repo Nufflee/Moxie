@@ -5,15 +5,15 @@ namespace Moxie.Common
   [Serializable]
   public class User
   {
-    public readonly string name;
-    public readonly Guid id;
-    public readonly IP4 ip;
+    public string Name { get; }
+    public Guid Id { get; }
+    public IP4 Ip { get; }
 
     public User(string name, Guid id, IP4 ip)
     {
-      this.name = name;
-      this.id = id;
-      this.ip = ip;
+      Name = name;
+      Id = id;
+      Ip = ip;
     }
 
     public static bool operator ==(User left, User right)
@@ -21,7 +21,7 @@ namespace Moxie.Common
       if ((object)left == null || (object)right == null)
         throw new ArgumentNullException();
 
-      return left.id == right.id;
+      return left.Id == right.Id;
     }
 
     public static bool operator !=(User left, User right)
@@ -31,7 +31,7 @@ namespace Moxie.Common
 
     protected bool Equals(User other)
     {
-      return string.Equals(name, other.name) && id.Equals(other.id) && ip.Equals(other.ip);
+      return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Ip.Equals(other.Ip);
     }
 
     public override bool Equals(object obj)
@@ -45,9 +45,9 @@ namespace Moxie.Common
     {
       unchecked
       {
-        int hashCode = (name != null ? name.GetHashCode() : 0);
-        hashCode = (hashCode * 397) ^ id.GetHashCode();
-        hashCode = (hashCode * 397) ^ ip.GetHashCode();
+        int hashCode = (Name != null ? Name.GetHashCode() : 0);
+        hashCode = (hashCode * 397) ^ Id.GetHashCode();
+        hashCode = (hashCode * 397) ^ Ip.GetHashCode();
         return hashCode;
       }
     }

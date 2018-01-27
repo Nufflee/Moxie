@@ -1,28 +1,26 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using System.Windows.Threading;
+using Moxie.Client.UI;
 using Moxie.Common;
-using Moxie.Server;
+using Moxie.Server.Packets;
 
-namespace Moxie
+namespace Moxie.Client
 {
   public class Client
   {
-    string name;
-    IP4 ip;
-    IP4 serverIp;
-    ClientWindow window;
+    private string name;
+    private IP4 ip;
+    private IP4 serverIp;
+    private ClientWindow window;
 
-    User user;
+    private User user;
 
-    UdpClient client;
+    private UdpClient client;
 
-    Thread send, recieve;
+    private Thread send, recieve;
 
     public Client(string name, IP4 serverIp, ClientWindow window)
     {
@@ -55,7 +53,7 @@ namespace Moxie
       Send(new MessagePacket(user, message));
     }
 
-    bool OpenConnection()
+    private bool OpenConnection()
     {
       client = new UdpClient(0);
       client.Connect(serverIp.Address, serverIp.Port);
@@ -68,7 +66,7 @@ namespace Moxie
       return true;
     }
 
-    void Recieve()
+    private void Recieve()
     {
       recieve = new Thread(() =>
       {
@@ -84,7 +82,7 @@ namespace Moxie
       recieve.Start();
     }
 
-    void Process(byte[] data)
+    private void Process(byte[] data)
     {
       object packetData = null;
 
@@ -97,23 +95,27 @@ namespace Moxie
         Console.WriteLine(e);
       }
 
-      if (packetData is ConnectionPacket)
+      switch (packetData)
       {
-      }
-      else if (packetData is MessagePacket)
-      {
-        MessagePacket packet = (MessagePacket)packetData;
+        case MessagePacket packet:
+          if (packet.User == user)
+          {
+            return;
+          }
 
-        if (packet.user == user)
-        {
-          return;
-        }
+          Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.ToString()));
+          break;
 
-        Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(packet.ToString()));
+        case ListPacket<MessagePacket> packet:
+          foreach (MessagePacket message in packet.Packets)
+          {
+            Dispatcher.CurrentDispatcher.Invoke(() => ShowMessage(message.ToString()));
+          }
+          break;
       }
     }
 
-    void Send(Packet packet)
+    private void Send(Packet packet)
     {
       send = new Thread(() =>
       {
@@ -125,7 +127,14 @@ namespace Moxie
       send.Start();
     }
 
-    void Print(string message) => window.Print(message);
-    void ShowMessage(string message) => window.ShowMessage(message);
+    private void Print(string message)
+    {
+      window.Print(message);
+    }
+
+    private void ShowMessage(string message)
+    {
+      window.ShowMessage(message);
+    }
   }
 }

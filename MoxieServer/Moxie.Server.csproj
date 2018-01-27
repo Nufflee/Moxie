@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Moxie.Common">
-      <HintPath>..\Moxie.Common\bin\Debug\net461\Moxie.Common.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Moxie.Common\Moxie.Common.csproj" />
   </ItemGroup>
 </Project>

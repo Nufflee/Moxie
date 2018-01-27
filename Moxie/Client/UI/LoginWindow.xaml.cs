@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Windows;
+﻿using System.Windows;
 using Moxie.Common;
 
-namespace Moxie
+namespace Moxie.Client.UI
 {
   /// <summary>
   /// Interaction logic for LoginWindow.xaml
@@ -16,17 +14,17 @@ namespace Moxie
       InitializeComponent();
     }
 
-    void OnClick_ButtonLogin(object sender, RoutedEventArgs e)
+    private void OnClick_ButtonLogin(object sender, RoutedEventArgs e)
     {
       LogIn(TextUsername.Text, new IP4(TextIPAddress.Text, int.Parse(TextPort.Text)));
     }
 
-    void LogIn(string name, IP4 address)
+    private void LogIn(string name, IP4 address)
     {
       ClientWindow client = new ClientWindow(name, address);
       client.Show();
 
-      Close();
+      Hide();
     }
   }
 }

@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moxie.Common">
-      <HintPath>..\Moxie.Common\bin\Debug\net461\Moxie.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -110,6 +107,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Moxie.Common\Moxie.Common.csproj">
+      <Project>{573c16dc-2484-44a5-a4d6-32080a9d522f}</Project>
+      <Name>Moxie.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MoxieServer\Moxie.Server.csproj">
       <Project>{8f14a3fc-8b79-4638-ac50-6912a5a575e8}</Project>
       <Name>Moxie.Server</Name>

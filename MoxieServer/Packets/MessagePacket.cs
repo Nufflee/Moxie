@@ -1,23 +1,25 @@
 ﻿using System;
 using Moxie.Common;
 
-namespace Moxie.Server
+namespace Moxie.Server.Packets
 {
   [Serializable]
   public class MessagePacket : Packet
   {
-    public readonly User user;
-    public readonly string message;
+    public User User { get; }
+    public string Message { get; }
+    public DateTime SendTime { get; }
 
     public MessagePacket(User user, string message)
     {
-      this.user = user;
-      this.message = message;
+      User = user;
+      Message = message;
+      SendTime = DateTime.Now;
     }
 
     public override string ToString()
     {
-      return $"{DateTime.Now.ToShortTimeString()} {user.name}: {message}";
+      return $"{SendTime.ToShortTimeString()} {User.Name}: {Message}";
     }
   }
 }

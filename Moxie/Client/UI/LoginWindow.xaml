@@ -1,18 +1,19 @@
-﻿<Window x:Class="Moxie.LoginWindow"
+﻿<Window x:Class="Moxie.Client.UI.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Moxie"
+        xmlns:ui="clr-namespace:Moxie.UI"
         mc:Ignorable="d"
         Title="Login" Height="380" Width="300" WindowStartupLocation="CenterScreen">
-    <Canvas HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="292">
-        <local:PlaceholderTextBox x:Name="TextUsername" PlaceholderText="Username" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="13.5" Canvas.Left="80" Canvas.Top="28" Width="137" />
-        <local:PlaceholderTextBox x:Name="TextPassword" PlaceholderText="Password" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="13.5" Canvas.Left="80" Canvas.Top="66" Width="137" />
-        <local:PlaceholderTextBox x:Name="TextIPAddress" PlaceholderText="IP Address" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13.5"  Canvas.Left="80" Canvas.Top="108" Width="137" />
-        <local:PlaceholderTextBox x:Name="TextPort" PlaceholderText="Port" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13.5"  Canvas.Left="80" Canvas.Top="169" Width="137" />
-        <Label Content="(eg. 192.168.0.0)" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13.5" Height="29" Width="126" Canvas.Left="91" Canvas.Top="131" />
-        <Label Content="(eg. 25565)"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13.5" Height="30" Width="111" Canvas.Left="106" Canvas.Top="192" />
-        <Button x:Name="ButtonLogin"  HorizontalAlignment="Center" Content="LoginWindow" Height="27" Canvas.Left="113" Canvas.Top="298" Width="67" FontSize="14.5" Click="OnClick_ButtonLogin" />
-    </Canvas>
+  <Canvas HorizontalAlignment="Left" Height="342" VerticalAlignment="Top" Width="292">
+    <ui:PlaceholderTextBox x:Name="TextUsername" PlaceholderText="Username" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="13.5" Canvas.Left="80" Canvas.Top="28" Width="137" />
+    <ui:PlaceholderTextBox x:Name="TextPassword" PlaceholderText="Password" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="13.5" Canvas.Left="80" Canvas.Top="66" Width="137" />
+    <ui:PlaceholderTextBox x:Name="TextIPAddress" PlaceholderText="IP Address" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13.5"  Canvas.Left="80" Canvas.Top="108" Width="137" />
+    <ui:PlaceholderTextBox x:Name="TextPort" PlaceholderText="Port" Height="23"  TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13.5"  Canvas.Left="80" Canvas.Top="169" Width="137" />
+    <Label Content="(eg. 192.168.0.0)" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13.5" Height="29" Width="126" Canvas.Left="91" Canvas.Top="131" />
+    <Label Content="(eg. 25565)"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13.5" Height="30" Width="111" Canvas.Left="106" Canvas.Top="192" />
+    <Button x:Name="ButtonLogin"  HorizontalAlignment="Center" Content="LoginWindow" Height="27" Canvas.Left="113" Canvas.Top="298" Width="67" FontSize="14.5" Click="OnClick_ButtonLogin" />
+  </Canvas>
 </Window>

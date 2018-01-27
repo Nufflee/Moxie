@@ -1,25 +1,20 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Moxie
+namespace Moxie.UI
 {
   public class PlaceholderTextBox : TextBox
   {
-    public static readonly DependencyProperty placeholderTextProperty = DependencyProperty.Register("Placeholder", typeof(string), typeof(PlaceholderTextBox));
+    private static readonly DependencyProperty placeholderTextProperty = DependencyProperty.Register("Placeholder", typeof(string), typeof(PlaceholderTextBox));
 
     public string PlaceholderText
     {
-      get { return (string)GetValue(placeholderTextProperty); }
-      set { SetValue(placeholderTextProperty, value); }
+      get => (string)GetValue(placeholderTextProperty);
+      set => SetValue(placeholderTextProperty, value);
     }
 
-    public bool IsPlaceholderActive
-    {
-      get { return Text == PlaceholderText && Foreground.Equals(Brushes.Gray); }
-    }
+    public bool IsPlaceholderActive => Text == PlaceholderText && Foreground.Equals(Brushes.Gray);
 
     public PlaceholderTextBox()
     {
@@ -30,7 +25,7 @@ namespace Moxie
       LostFocus += AddPlaceholderText;
     }
 
-    void AddPlaceholderText(object sender, RoutedEventArgs e)
+    private void AddPlaceholderText(object sender, RoutedEventArgs e)
     {
       if (!string.IsNullOrEmpty(Text))
         return;
@@ -39,7 +34,7 @@ namespace Moxie
       Foreground = Brushes.Gray;
     }
 
-    void RemovePlaceholderText(object sender, RoutedEventArgs e)
+    private void RemovePlaceholderText(object sender, RoutedEventArgs e)
     {
       if (!IsPlaceholderActive)
         return;

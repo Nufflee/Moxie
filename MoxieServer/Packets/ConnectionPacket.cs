@@ -1,18 +1,18 @@
 ﻿using System;
 using Moxie.Common;
 
-namespace Moxie.Server
+namespace Moxie.Server.Packets
 {
   [Serializable]
   public class ConnectionPacket : Packet
   {
-    public readonly User user;
-    public readonly IP4 ip;
+    public User User { get; }
+    public IP4 Ip { get; }
 
     public ConnectionPacket(User user, IP4 ip)
     {
-      this.user = user;
-      this.ip = ip;
+      User = user;
+      Ip = ip;
     }
   }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
-namespace Moxie
+namespace Moxie.Common.Extensions
 {
   public static class Extensions
   {
@@ -14,21 +12,6 @@ namespace Moxie
     public static string GetString(this byte[] bytes)
     {
       return Encoding.ASCII.GetString(bytes);
-    }
-
-    public static string Prepend(this string text, string value, Func<string, int> condition)
-    {
-      for (int i = 0; i < condition.Invoke(text); i++)
-      {
-        text = value + text;
-      }
-
-      return text;
-    }
-
-    public static void Shuffle<T>(this T[] array)
-    {
-      array = array.OrderBy(x => new Random().Next()).ToArray();
     }
   }
 }

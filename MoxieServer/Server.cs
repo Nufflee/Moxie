@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using Moxie.Common;
+using Moxie.Server.Packets;
 
 namespace Moxie.Server
 {
   public class Server
   {
-    int port;
+    private int port;
+    private UdpClient udpClient;
 
-    UdpClient udpClient;
-    Thread run, manage, send, recieve;
+    private Thread run, manage, send, recieve;
 
-    List<User> users = new List<User>();
+    private List<User> users = new List<User>();
+    private List<MessagePacket> messages = new List<MessagePacket>();
 
-    bool isRunning;
+    private bool isRunning;
 
     public Server(int port)
     {
@@ -31,7 +29,7 @@ namespace Moxie.Server
       run.Start();
     }
 
-    void Run()
+    private void Run()
     {
       isRunning = true;
 
@@ -41,7 +39,7 @@ namespace Moxie.Server
       Recieve();
     }
 
-    void ManageClients()
+    private void ManageClients()
     {
       manage = new Thread(() =>
       {
@@ -53,7 +51,7 @@ namespace Moxie.Server
       manage.Start();
     }
 
-    void Recieve()
+    private void Recieve()
     {
       recieve = new Thread(() =>
       {
@@ -70,7 +68,7 @@ namespace Moxie.Server
       recieve.Start();
     }
 
-    void Process(byte[] data)
+    private void Process(byte[] data)
     {
       object packetData = null;
 
@@ -83,32 +81,39 @@ namespace Moxie.Server
         Console.WriteLine(e);
       }
 
-      if (packetData is ConnectionPacket)
+      switch (packetData)
       {
-        ConnectionPacket packet = (ConnectionPacket)packetData;
+        case ConnectionPacket packet:
+          users.Add(packet.User);
+          Send(new ListPacket<MessagePacket>(messages), packet.Ip);
+          SendToAll(new MessagePacket(packet.User, $"{packet.User.Name} joined! Say hello."));
 
-        users.Add(packet.user);
-        Console.WriteLine($"{packet.user.name} connected to the server with id: {packet.user.id}");
-      }
-      else if (packetData is MessagePacket)
-      {
-        MessagePacket packet = (MessagePacket)packetData;
+          Console.WriteLine($"{packet.User.Name} connected to the server with id: {packet.User.Id}");
+          break;
 
-        SendToAll(packet);
+        case MessagePacket packet:
+          SendToAll(packet);
+          messages.Add(packet);
 
-        Console.WriteLine(packet.ToString());
+          if (messages.Count >= 100)
+          {
+            messages.RemoveRange(100, messages.Count - 100);
+          }
+
+          Console.WriteLine(packet.ToString());
+          break;
       }
     }
 
-    void SendToAll(Packet packet, bool sendToSender = false)
+    private void SendToAll(Packet packet, bool sendToSender = false)
     {
       foreach (User user in users)
       {
-        Send(packet, user.ip);
+        Send(packet, user.Ip);
       }
     }
 
-    void Send(Packet packet, IP4 ip)
+    private void Send(Packet packet, IP4 ip)
     {
       send = new Thread(() =>
       {

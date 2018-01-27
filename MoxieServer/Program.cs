@@ -1,17 +1,15 @@
-﻿using System;
-
-namespace Moxie.Server
+﻿namespace Moxie.Server
 {
   public class Program
   {
-    Server server;
+    private Server server;
 
     public Program(int port)
     {
       server = new Server(port);
     }
 
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
       int port;
 
