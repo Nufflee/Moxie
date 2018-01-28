@@ -56,6 +56,7 @@ namespace Moxie.Client.UI
       base.OnClosed(e);
 
       Application.Current.Shutdown();
+      Environment.Exit(0);
     }
   }
 }

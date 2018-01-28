@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Moxie.Common
+﻿namespace Moxie.Common
 {
   public abstract class Singleton<T>
     where T : new()
   {
-    public T Instance
+    public static T Instance
     {
       get
       {
@@ -24,6 +18,6 @@ namespace Moxie.Common
       }
     }
 
-    private T instance;
+    private static T instance;
   }
 }

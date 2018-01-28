@@ -2,11 +2,9 @@
 {
   public class Program
   {
-    private Server server;
-
     public Program(int port)
     {
-      server = new Server(port);
+      Server.Instance.Start(port);
     }
 
     private static void Main(string[] args)

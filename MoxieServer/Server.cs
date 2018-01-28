@@ -6,25 +6,26 @@ using System.Net.Sockets;
 using System.Threading;
 using Moxie.Common;
 using Moxie.Server.Packets;
+using Moxie.Server.Services;
 
 namespace Moxie.Server
 {
-  public class Server
+  public class Server : Singleton<Server>
   {
-    private int port;
+    public IP4 Ip { get; private set; }
+    public int Port { get; private set; }
+
     private UdpClient udpClient;
 
     private Thread run, manage, send, recieve;
 
-    private List<User> users = new List<User>();
-    private List<TextPacket> texts = new List<TextPacket>();
-
     private bool isRunning;
 
-    public Server(int port)
+    public void Start(int port)
     {
-      this.port = port;
+      Port = port;
       udpClient = new UdpClient(port);
+      Ip = (IP4)udpClient.Client.LocalEndPoint;
 
       run = new Thread(Run);
       run.Start();
@@ -34,7 +35,7 @@ namespace Moxie.Server
     {
       isRunning = true;
 
-      Console.WriteLine($"Server started on port: {port}");
+      Console.WriteLine($"Server started on port: {Port}");
 
       ManageClients();
       Recieve();
@@ -85,32 +86,22 @@ namespace Moxie.Server
       switch (packetData)
       {
         case ConnectionPacket packet:
-          users.Add(packet.User);
-          Send(new ListPacket<TextPacket>(texts, udpClient.Client.LocalEndPoint as IPEndPoint), packet.Sender);
-          SendToAll(new TextPacket($"{packet.User.Name} joined! Say hello.", packet.User.Ip), false);
-
+          UserService.Instance.ConnectUser(packet.User);
           Console.WriteLine($"{packet.User.Name} connected to the server with id: {packet.User.Id}");
 
           break;
 
         case TextPacket packet:
-          SendToAll(packet, false);
-          texts.Add(packet);
-
-          if (texts.Count >= 100)
-          {
-            texts.RemoveRange(100, texts.Count - 100);
-          }
-
+          ChatService.Instance.AddMessage(packet);
           Console.WriteLine(packet.FormattedText);
 
           break;
       }
     }
 
-    private void SendToAll(Packet packet, bool sendToSender = true)
+    public void SendToAll(Packet packet, bool sendToSender = true)
     {
-      foreach (User user in users)
+      foreach (User user in UserService.Instance.GetUsers())
       {
         if (!sendToSender)
         {
@@ -126,7 +117,7 @@ namespace Moxie.Server
       }
     }
 
-    private void Send(Packet packet, IP4 ip)
+    public void Send(Packet packet, IP4 ip)
     {
       send = new Thread(() =>
       {
