@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -87,12 +85,19 @@ namespace Moxie.Server
       {
         case ConnectionPacket packet:
           UserService.Instance.ConnectUser(packet.User);
+
           Console.WriteLine($"{packet.User.Name} connected to the server with id: {packet.User.Id}");
 
           break;
 
         case TextPacket packet:
           ChatService.Instance.AddMessage(packet);
+
+          if (packet is MessagePacket)
+          {
+            CommandService.Instance.Process(packet);
+          }
+
           Console.WriteLine(packet.FormattedText);
 
           break;

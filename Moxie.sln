@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxie", "Moxie\Moxie.csproj", "{88A428A2-B66B-47E2-B3E8-BC801212E660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxie.Server", "MoxieServer\Moxie.Server.csproj", "{8F14A3FC-8B79-4638-AC50-6912A5A575E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moxie.Server2", "MoxieServer\Moxie.Server2.csproj", "{8F14A3FC-8B79-4638-AC50-6912A5A575E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxie.Common", "Moxie.Common\Moxie.Common.csproj", "{573C16DC-2484-44A5-A4D6-32080A9D522F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moxie.Common2", "Moxie.Common\Moxie.Common2.csproj", "{573C16DC-2484-44A5-A4D6-32080A9D522F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moxie.Server", "Moxie.Server\Moxie.Server.csproj", "{3702D1A6-D5C2-4708-AE57-33B8B849B43F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxie.Common", "Moxie.Common\Moxie.Common.csproj", "{3A41052A-DF82-4D16-B31D-36A15620F7D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{573C16DC-2484-44A5-A4D6-32080A9D522F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573C16DC-2484-44A5-A4D6-32080A9D522F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573C16DC-2484-44A5-A4D6-32080A9D522F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3702D1A6-D5C2-4708-AE57-33B8B849B43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3702D1A6-D5C2-4708-AE57-33B8B849B43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3702D1A6-D5C2-4708-AE57-33B8B849B43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3702D1A6-D5C2-4708-AE57-33B8B849B43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A41052A-DF82-4D16-B31D-36A15620F7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A41052A-DF82-4D16-B31D-36A15620F7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A41052A-DF82-4D16-B31D-36A15620F7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A41052A-DF82-4D16-B31D-36A15620F7D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

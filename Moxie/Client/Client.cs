@@ -73,7 +73,15 @@ namespace Moxie.Client
         while (true)
         {
           IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, serverIp.Port);
-          byte[] data = client.Receive(ref endPoint);
+          byte[] data = null;
+
+          try
+          {
+            data = client.Receive(ref endPoint);
+          }
+          catch (SocketException)
+          {
+          }
 
           Process(data);
         }
